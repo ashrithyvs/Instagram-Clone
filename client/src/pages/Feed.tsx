@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Post } from "../components";
+import moment from "moment";
 function Feed() {
   const [posts, setPosts] = useState([]);
 
-  const getPosts = () => {
-    axios.get("http://localhost:4001/posts").then((res) => {
+  const getPosts = async () => {
+    await axios.get("http://localhost:4001/posts").then((res) => {
       setPosts(res.data.data);
       console.log(res.data.data);
     });
@@ -18,7 +19,7 @@ function Feed() {
     <div className="bg-[#fefefe] py-6">
       <div className="w-1/3 mx-auto">
         {posts.map((post) => {
-          return <Post post={post} />;
+          return <Post key={post.postId} post={post} />;
         })}
       </div>
     </div>

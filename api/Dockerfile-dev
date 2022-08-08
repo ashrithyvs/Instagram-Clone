@@ -1,0 +1,14 @@
+FROM node:16-bullseye
+
+RUN apt-get update -y
+
+WORKDIR /app
+
+RUN npm install nodemon -g
+
+COPY package.json /tmp/package.json
+RUN cp /tmp/package.json /app/package.json
+RUN npm install
+
+CMD ["/app/start_dev.sh"]
+# CMD ["/app/start_setup.sh"]

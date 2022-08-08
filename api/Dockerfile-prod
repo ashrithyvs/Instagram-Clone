@@ -1,0 +1,16 @@
+FROM node:16-bullseye
+
+RUN apt-get update -y
+
+WORKDIR /app
+
+EXPOSE 3001
+
+COPY package.json /tmp/package.json
+RUN cp /tmp/package.json /app/package.json
+RUN npm install
+
+COPY . /app
+
+RUN chmod +x /app/start_prod.sh
+CMD ["/app/start_prod.sh"]

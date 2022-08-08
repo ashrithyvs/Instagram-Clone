@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema({
   saved: {
     type: Array,
   },
+  followers: { type: Array },
+  following: { type: Array },
+  posts: { type: Array },
+  comments: { type: Array },
   likes: { type: Array },
   email: {
     type: String,

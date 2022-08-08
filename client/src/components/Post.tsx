@@ -10,9 +10,11 @@ import { IoMdPaperPlane } from "react-icons/io";
 import { MdOutlineBookmarkBorder, MdOutlineBookmark } from "react-icons/md";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { AiOutlineSmile } from "react-icons/ai";
+import CommentsModal from "./CommentsModal";
 
 export default function Post({ post }) {
   const [comments, setComments] = useState([]);
+  const [file, setFile] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [like, setLike] = useState(
     post.likes.find((item) => {
@@ -28,26 +30,29 @@ export default function Post({ post }) {
       ? true
       : false
   );
-  const getCommentsByPostId = () => {
-    axios.get(`comments/${post.postId}`).then((res) => {
+  const getCommentsByPostId = async () => {
+    await axios.get(`comments/${post.postId}`).then((res) => {
       setComments(res.data.data);
     });
   };
 
-  const postComment = () => {
-    axios
+  const postComment = async () => {
+    await axios
       .put(`posts/add-comment/${post.postId}`, {
         commentBy: "tester2",
         comment: newComment,
       })
       .then(() => {
         setNewComment("");
+      })
+      .then(() => {
+        getCommentsByPostId();
       });
   };
 
-  const onLikeClick = () => {
+  const onLikeClick = async () => {
     if (!like) {
-      axios
+      await axios
         .put(`posts/like/${post.postId}`, {
           username: "tester2",
         })
@@ -55,7 +60,7 @@ export default function Post({ post }) {
           setLike(true);
         });
     } else if (like) {
-      axios
+      await axios
         .put(`posts/dislike/${post.postId}`, {
           username: "tester2",
         })
@@ -64,9 +69,9 @@ export default function Post({ post }) {
         });
     }
   };
-  const onSaveClick = () => {
+  const onSaveClick = async () => {
     if (!save) {
-      axios
+      await axios
         .put(`posts/save/${post.postId}`, {
           username: "tester2",
         })
@@ -74,7 +79,7 @@ export default function Post({ post }) {
           setSave(true);
         });
     } else if (save) {
-      axios
+      await axios
         .put(`posts/unsave/${post.postId}`, {
           username: "tester2",
         })
@@ -84,12 +89,34 @@ export default function Post({ post }) {
     }
   };
 
+  const uploadFile = () => {
+    var formData = new FormData();
+    var imagefile = document.querySelector("#file");
+    formData.append("image", imagefile.files[0]);
+    console.log(imagefile, formData);
+    axios
+      .post(`upload`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      });
+  };
+  function toggleModal(modalID) {
+    document.getElementById(modalID).classList.toggle("hidden");
+    // document.getElementById(modalID + "-backdrop").classList.toggle("hidden");
+    // document.getElementById(modalID).classList.toggle("flex");
+    // document.getElementById(modalID + "-backdrop").classList.toggle("flex");
+  }
   useEffect(() => {
     getCommentsByPostId();
   }, []);
 
   return (
     <div className="shadow-md border-[0.25px] border-slate-200 my-4 rounded-md">
+      {/* <input onChange={uploadFile} id="file" type="file" /> */}
       <div className="py-4 flex bg-[#fff] space-x-4 w-full items-center px-6">
         <CgProfile size={32} className="cursor-pointer" />
         <h4 className="font-semibold cursor-pointer w-full">{post.postedBy}</h4>
@@ -114,6 +141,7 @@ export default function Post({ post }) {
             )}
             <FiMessageCircle
               size={32}
+              onClick={() => toggleModal(`large-modal-${post.postId}`)}
               className="hover:text-slate-400 cursor-pointer"
             />
             <IoMdPaperPlane
@@ -140,7 +168,10 @@ export default function Post({ post }) {
           <h4 className="font-semibold cursor-pointer">{post.postedBy}</h4>
           <h4>{post.body}</h4>
         </div>
-        <h4 className="text-slate-400 cursor-pointer">
+        <h4
+          onClick={() => toggleModal(`large-modal-${post.postId}`)}
+          className="text-slate-400 cursor-pointer"
+        >
           View all {post.comments.length} comments
         </h4>
         <h4 className="text-slate-400 py-1">
@@ -168,6 +199,18 @@ export default function Post({ post }) {
           </h4>
         </div>
       </div>
+      <CommentsModal
+        comments={comments}
+        post={post}
+        toggleModal={toggleModal}
+        postComment={postComment}
+        newComment={newComment}
+        setNewComment={setNewComment}
+        save={save}
+        onSaveClick={onSaveClick}
+        like={like}
+        onLikeClick={onLikeClick}
+      />
     </div>
   );
 }
