@@ -25,7 +25,7 @@ const useAuth = () => {
 
   const login = (email, password) => {
     return unAuthAxios
-      .post("user/login", {
+      .post("login", {
         email: email,
         password: password,
       })

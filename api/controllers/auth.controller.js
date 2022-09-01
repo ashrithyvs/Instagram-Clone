@@ -50,6 +50,8 @@ module.exports = (connectDB) => {
     },
     async login(req, res, next) {
       const { email, password } = req.body;
+
+      console.log(email, password);
       if (!email || !password) {
         return next(
           new ErrorResponse("Please provide an email and password", 400)

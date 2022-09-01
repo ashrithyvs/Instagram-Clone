@@ -53,7 +53,6 @@ module.exports = (connectDB) => {
     },
     getImageByFileId(req, res) {
       // console.log('id', req.params.id)
-      console.log(gfs);
 
       const file = gfs
         .find({

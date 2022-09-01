@@ -11,6 +11,8 @@ module.exports = {
       "secondary-hover": "#4e4f52",
       card: "#26292D",
       transparent: "rgb(0,0,0,0)",
+      link: "#3499e6",
+      "disabled-link": "#8bcbfc",
     },
     extend: {
       screens: {

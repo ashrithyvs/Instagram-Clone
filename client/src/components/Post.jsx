@@ -185,7 +185,7 @@ export default function Post({ post }) {
             onClick={postComment}
             className={`font-bold ${
               newComment.length !== 0
-                ? "text-[#47afff]  cursor-pointer"
+                ? "text-[#3499e6]  cursor-pointer"
                 : "text-[#8bcbfc] cursor-not-allowed"
             } `}
           >
