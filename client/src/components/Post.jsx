@@ -114,7 +114,10 @@ export default function Post({ post }) {
         <HiOutlineDotsHorizontal className="cursor-pointer" size={24} />
       </div>
       <img
-        src={`http://localhost:4002/image/${post.image}` || PostPlaceholder}
+        src={
+          `${import.meta.env.VITE_BASE_URL}image/${post.image}` ||
+          PostPlaceholder
+        }
         className="max-h-[100vh] w-[100%]"
       />
       <div className="px-6 ">

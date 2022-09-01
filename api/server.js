@@ -52,7 +52,7 @@ require("./routes")(app);
 app.use(function (req, res, next) {
   res.status(404).send({ error: "Route not found" });
 });
-const port = 4002;
+const port = 4000;
 
 app.listen(port, () => {
   console.log("Server listening on " + "http://localhost:" + port);

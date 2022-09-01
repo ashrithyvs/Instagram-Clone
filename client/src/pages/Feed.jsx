@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "../auth/Axios";
 import { Post } from "../components";
 import moment from "moment";
 function Feed() {
   const [posts, setPosts] = useState([]);
 
   const getPosts = async () => {
-    await axios.get("http://localhost:4002/posts").then((res) => {
+    await axios.get("posts").then((res) => {
       setPosts(res.data.data);
     });
   };
