@@ -16,6 +16,7 @@ export default function Post({ post }) {
   const [comments, setComments] = useState([]);
   const [file, setFile] = useState([]);
   const [newComment, setNewComment] = useState("");
+  const [image, setImage] = useState(true);
   const [like, setLike] = useState(
     post.likes.find((item) => {
       return item == "tester2";
@@ -35,10 +36,15 @@ export default function Post({ post }) {
       setComments(res.data.data);
     });
   };
+  // const getPostImage = async () => {
+  //   await axios.get(`image/${post.image}`).then((res) => {
+  //     setImage(true);
+  //   });
+  // };
 
   const postComment = async () => {
     await axios
-      .put(`posts/add-comment/${post.postId}`, {
+      .patch(`posts/add-comment/${post.postId}`, {
         commentBy: "tester2",
         comment: newComment,
       })
@@ -53,7 +59,7 @@ export default function Post({ post }) {
   const onLikeClick = async () => {
     if (!like) {
       await axios
-        .put(`posts/like/${post.postId}`, {
+        .patch(`posts/like/${post.postId}`, {
           username: "tester2",
         })
         .then(() => {
@@ -61,7 +67,7 @@ export default function Post({ post }) {
         });
     } else if (like) {
       await axios
-        .put(`posts/dislike/${post.postId}`, {
+        .patch(`posts/dislike/${post.postId}`, {
           username: "tester2",
         })
         .then(() => {
@@ -72,7 +78,7 @@ export default function Post({ post }) {
   const onSaveClick = async () => {
     if (!save) {
       await axios
-        .put(`posts/save/${post.postId}`, {
+        .patch(`posts/save/${post.postId}`, {
           username: "tester2",
         })
         .then(() => {
@@ -80,7 +86,7 @@ export default function Post({ post }) {
         });
     } else if (save) {
       await axios
-        .put(`posts/unsave/${post.postId}`, {
+        .patch(`posts/unsave/${post.postId}`, {
           username: "tester2",
         })
         .then(() => {
@@ -89,21 +95,6 @@ export default function Post({ post }) {
     }
   };
 
-  const uploadFile = () => {
-    var formData = new FormData();
-    var imagefile = document.querySelector("#file");
-    formData.append("image", imagefile.files[0]);
-    console.log(imagefile, formData);
-    axios
-      .post(`upload`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        console.log(res);
-      });
-  };
   function toggleModal(modalID) {
     document.getElementById(modalID).classList.toggle("hidden");
     // document.getElementById(modalID + "-backdrop").classList.toggle("hidden");
@@ -122,7 +113,10 @@ export default function Post({ post }) {
         <h4 className="font-semibold cursor-pointer w-full">{post.postedBy}</h4>
         <HiOutlineDotsHorizontal className="cursor-pointer" size={24} />
       </div>
-      <img src={PostPlaceholder} className="max-h-[100vh] w-[100%]" />
+      <img
+        src={`http://localhost:4002/image/${post.image}` || PostPlaceholder}
+        className="max-h-[100vh] w-[100%]"
+      />
       <div className="px-6 ">
         <div className="py-2 flex justify-between">
           <div className="flex space-x-6">
@@ -202,6 +196,8 @@ export default function Post({ post }) {
       <CommentsModal
         comments={comments}
         post={post}
+        postPlaceholder={PostPlaceholder}
+        image={`http://localhost:4002/image/${post.image}`}
         toggleModal={toggleModal}
         postComment={postComment}
         newComment={newComment}

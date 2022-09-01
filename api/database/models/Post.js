@@ -25,7 +25,7 @@ const postSchema = new mongoose.Schema({
   saves: { type: Array },
   image: {
     type: String,
-    // required: [true, "Please provide a Last Name"],
+    required: [true, "Please upload an Image"],
   },
   createdAt: { type: Date, default: new Date() },
   modifiedAt: { type: Date, default: new Date() },

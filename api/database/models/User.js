@@ -33,10 +33,14 @@ const userSchema = new mongoose.Schema({
   },
   phoneNumber: {
     type: String,
+    unique: true,
     required: [true, "Please provide a Phone Number"],
   },
   saved: {
     type: Array,
+  },
+  profilePicture: {
+    type: String,
   },
   followers: { type: Array },
   following: { type: Array },

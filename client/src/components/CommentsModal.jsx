@@ -20,6 +20,8 @@ export default function CommentsModal({
   onSaveClick,
   onLikeClick,
   like,
+  image,
+  postPlaceholder,
 }) {
   const [commentsLiked, setCommentsLiked] = useState([]);
   function arrayRemove(arr, value) {
@@ -59,10 +61,10 @@ export default function CommentsModal({
         className="cursor-pointer absolute right-4 top-4"
       />
       <div className="relative px-4 w-full max-w-[85rem] h-full md:h-auto">
-        <div className="relative bg-[#fff] max-w-[85rem] flex rounded-lg shadow-xl">
+        <div className="relative bg-[#fff] max-w-[85rem] items-center flex rounded-lg shadow-xl">
           <img
             className="rounded-l-lg w-full h-full max-w-[40rem]"
-            src="https://images.unsplash.com/photo-1659946633870-102a2dd18a77?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"
+            src={image || postPlaceholder}
           />
           <div className="w-1/2 p-4 ">
             <div className="flex space-x-3 border-b-[0.25px] pb-3 border-slate-200 text-sm w-full items-center">
@@ -71,7 +73,7 @@ export default function CommentsModal({
                 {post.postedBy} • Following
               </h4>
             </div>
-            <div className="flex-col justify-around ">
+            <div className="flex flex-col justify-around ">
               <div className="py-2 overflow-y-scroll h-[37.4rem] no-scrollbar">
                 {comments.length === 0 ? (
                   <div className="h-[37.4rem] flex items-center justify-center">
