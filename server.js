@@ -12,13 +12,12 @@ const { Readable } = require("stream");
 const MongoClient = require("mongodb").MongoClient;
 const mongoose = require("mongoose");
 const connectDB = require("./config/db");
-// const ObjectID = require("mongodb").ObjectID;
 
 const app = express();
 
-// view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
+// // view engine setup
+// app.set("views", path.join(__dirname, "views"));
+// app.set("view engine", "ejs");
 
 app.use(cors());
 app.use(cookieParser());
